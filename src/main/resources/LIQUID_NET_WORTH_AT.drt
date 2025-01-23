@@ -1,0 +1,28 @@
+template header
+securityId
+globalValue
+name
+stateLevelMap
+
+package org.drools;
+import org.drools.model.RuleInput;
+import org.drools.model.Order;
+import org.drools.utils.*;
+import java.util.Map;
+dialect "mvel"
+template "ORDER"
+rule "SEC_@{securityId}_LIQUID_NET_WORTH_AT"
+    when
+        order : Order(securityId == "@{securityId}" )
+
+    then
+        stMap = Utils.toMap("@{stateLevelMap}")
+        state = order.getState();
+        min = stMap.get(state)
+        if(min !=null && min > order.liquidNetWorth) {
+           order.errors.add("Minimum Liquid net worth for security id "+order.securityId+" in state "+state+" is "+min);
+        } else if(min==null && @{globalValue} > order.liquidNetWorth){
+           order.errors.add("Minimum Liquid net worth for security id "+order.securityId+" is @{globalValue}");
+        }
+end
+end template

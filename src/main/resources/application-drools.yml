@@ -1,0 +1,39 @@
+spring:
+  datasource:
+    url:
+    driverClassName:
+    username:
+    password:
+
+# drools properties
+
+drools:
+  lazy:
+    loading: ${LAZY_LOADING:false}
+  cache:
+    cleaner:
+      enabled: ${CACHE_CLEANER:false}
+      delay: ${CACHE_CLEANER_DELAY:10000} # in ms
+    memory:
+      limit: ${CACHE_SEC_SIZE:1} # No of securities in memory
+      rules:
+        hold-duration: ${RULE_MEM_HOLD_DURATION:2}  # mention in minutes
+  rule-types:
+    - MINIMUM_PURCHASE_AT
+    - MIN_ANNUAL_INCOME_AT
+    - LIQUID_NET_WORTH_AT
+    - NET_WORTH_AT
+    - NET_WORTH_ALT_MINIMUM_AT
+
+# Ignoring rules and securities
+
+ignore-rule-list:
+  ruleTypesToIgnore:
+    - MIN_ANNUAL_INCOME_AT_RULE
+  securitiesToIgnore:
+    - 7166
+
+# Logging properties
+logging:
+  level:
+    org.drools: ${LOGGING_LEVEL:info}
